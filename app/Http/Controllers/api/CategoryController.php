@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\api;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,12 +19,12 @@ class CategoryController extends Controller
         ->get();
         return json_encode(['categories' => $categories]); 
     }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
         $category = new Category();       
         $category ->name = $request->name;
         $category ->description =$request->description;
@@ -35,7 +37,6 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
         $category = Category::find($id);   
         return json_encode(['category' => $category]);
     }
@@ -45,7 +46,6 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
         $category = Category::find($id);        
         $category->name = $request->name;       
         $category->description =$request->description;
@@ -58,7 +58,6 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
         $category = Category::find($id);        
         $category->delete();         
         $categories = DB::table('category')        
