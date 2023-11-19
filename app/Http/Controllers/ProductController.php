@@ -13,10 +13,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = DB::table('products')
-            ->select('products.*')
-            ->get();
-        return view("product.index", ['products' => $products]);
+        $products = Product::all();
+        return view("products.index", ['products' => $products]);
     }
 
     /**
@@ -24,9 +22,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $products = DB::table('products')
-            ->get();
-        return view('product.new', ['products' => $products]);
+        return view('products.new');
     }
 
     /**
@@ -34,69 +30,58 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = new Product();
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->price = $request->price;
-        // Ajusta según los campos necesarios para tu modelo Product
+        $request->validate([
+            'name' => 'required|max:80',
+            'price' => 'required|integer',
+            'stock' => 'required|integer',
+            'category_id' => 'required|integer',
+        ]);
 
-        $product->save();
+        Product::create($request->all());
 
-        $products = DB::table('products')
-            ->select('products.*')
-            ->get();
-        return view('product.index', ['products' => $products]);
+        return redirect()->route('products.index')->with('success', 'Product created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        // Implementa según tus necesidades
+        return view('products.show', compact('product'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        $product = Product::find($id);
-        $products = DB::table('products')
-            ->get();
-        return view('product.edit', ['product' => $product]);
+        return view('products.edit', compact('product'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
-        $product = Product::find($id);
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->price = $request->price;
-        // Ajusta según los campos necesarios para tu modelo Product
+        $request->validate([
+            'name' => 'required|max:80',
+            'price' => 'required|integer',
+            'stock' => 'required|integer',
+            'category_id' => 'required|integer',
+        ]);
 
-        $product->save();
+        $product->update($request->all());
 
-        $products = DB::table('products')
-            ->select('products.*')
-            ->get();
-        return view('product.index', ['products' => $products]);
+        return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        $product = Product::find($id);
         $product->delete();
 
-        $products = DB::table('products')
-            ->select('products.*')
-            ->get();
-        return view('product.index', ['products' => $products]);
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully');
     }
 }
