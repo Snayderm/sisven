@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PayMode extends Model
 {
     use HasFactory;    
-    protected $table = 'pay_mode';     
+    protected $table = 'paymodes';     
     protected $fillable = [
         'name',
         'observation',        

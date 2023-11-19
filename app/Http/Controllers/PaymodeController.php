@@ -61,7 +61,7 @@ class PaymodeController extends Controller
     public function edit(string $id)
     {
         $paymode = Paymode::find($id);
-        $paymode = DB::table('paymodes')        
+        $paymodes = DB::table('paymodes')        
         ->get();
         return view('paymode.edit',['paymode'=>$paymode]);
     }
